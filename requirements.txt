@@ -1,2 +1,4 @@
 fastapi==0.65.1
 uvicorn==0.13.4
+SQLAlchemy==1.4.15
+paginate-sqlalchemy==0.3.1
