@@ -1,6 +1,6 @@
 import os
 import datetime
-from stralette.config import Config
+from starlette.config import Config
 
 
 sqlite_uri = os.path.abspath("app/database/database.db")

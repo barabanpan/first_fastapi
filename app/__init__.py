@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from config import DevelopmentConfig as config
+from config import Config as config
 from .models.database import db, base
 
 
