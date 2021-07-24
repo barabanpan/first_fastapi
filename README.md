@@ -3,32 +3,13 @@
 ## Prerequisites
 1. ```pip install -r requirements.txt```
 
-2. In root directory create file `config.py`:
+2. In root directory create file `.env`:
 ```
-import os
-import datetime
-
-sqlite_uri = os.path.abspath("app/database/database.db")
-
-
-class Config(object):
-    DEBUG = False
-    TESTING = False
-    CSRF_ENABLED = True
-    SECRET_KEY = '{secred-key-here}'
-
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + sqlite_uri
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-
-class ProductionConfig(Config):
-    DEBUG = False
-    DEVELOPMENT = False
-
-
-class DevelopmentConfig(Config):
-    DEVELOPMENT = True
-    DEBUG = True
+DEBUG=true
+DEVELOPMENT=true
+TESTING=true
+SECRET_KEY={your-secret-key}
+JWT_SECRET_KEY={your-jwt-secret-key}
 ```
 
 ## Run
