@@ -15,4 +15,4 @@ JWT_SECRET_KEY={your-jwt-secret-key}
 ## Run
 ```uvicorn run:app --reload```
 
-Urls like [127.0.0.1:8000/docs](https://127.0.0.1:8000/docs) and [127.0.0.1:8000/redoc](https://127.0.0.1:8000/redoc) will open documentation.
+Urls like [127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and [127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc) will open documentation.
