@@ -1,11 +1,36 @@
-from .database import base, session
-from datetime import date
-from paginate_sqlalchemy import SqlalchemyOrmPage
-from pydantic import BaseModel
-from sqlalchemy import Column, String, Integer, Float, Boolean, Date
+#from datetime import date
+#from paginate_sqlalchemy import SqlalchemyOrmPage
+#from pydantic import BaseModel
+#from sqlalchemy import Column, String, Integer, Float, Boolean, Date
+
+import ormar
+from typing import List, Optional
+
+from .database import metadata, database
 
 
-class EmployeeBase(BaseModel):
+class Category(ormar.Model):
+    class Meta:
+        tablename = "categories"
+        metadata = metadata
+        database = database
+
+    id: int = ormar.Integer(primary_key=True)
+    name: str = ormar.String(max_length=100)
+
+
+class Item(ormar.Model):
+    class Meta:
+        tablename = "items"
+        metadata = metadata
+        database = database
+
+    id: int = ormar.Integer(primary_key=True)
+    name: str = ormar.String(max_length=100)
+    category: Optional[Category] = ormar.ForeignKey(Category, nullable=True)
+
+
+"""class EmployeeBase(ormar.Model):
     first_name: str
     last_name: str
     position: str
@@ -36,7 +61,7 @@ def to_json(x):
     }
 
 
-class EmployeeModel(base):
+class EmployeeModel_(base):
     __tablename__ = 'employees'
 
     id = Column(Integer(), primary_key=True)
@@ -87,3 +112,4 @@ class EmployeeModel(base):
     def save_to_db(self):
         session.add(self)
         session.commit()
+"""

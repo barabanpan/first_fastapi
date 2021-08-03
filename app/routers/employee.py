@@ -1,11 +1,38 @@
 from fastapi import APIRouter, HTTPException
-from typing import List, Dict
+from typing import List  #, Dict
 from pydantic import BaseModel
+import ormar
 
-from app.models.employee import EmployeeIn, Employee, EmployeeModel, to_json
+from app.models.employee import Item, Category
 
 
 employee_router = APIRouter()
+
+
+
+@employee_router.get("/items/{item_id}", response_model=List[Item])
+async def get_item(item_id):
+    try:
+        item = await Item.objects.get(pk=item_id)
+        return item
+    except ormar.exceptions.NoMatch:
+        raise HTTPException(status_code=404, detail="No such item")
+
+
+@employee_router.get("/items/", response_model=List[Item])
+async def get_items():
+    items = await Item.objects.select_related("category").all()
+    return items
+
+
+@employee_router.post("/items/", response_model=Item)
+async def create_item(item: Item):
+    await item.save()
+    return item
+
+
+#@employee_router.
+
 
 
 class ReadEmployeesJson(BaseModel):
@@ -17,7 +44,7 @@ class ReadEmployeesJson(BaseModel):
 class MessageResponse(BaseModel):
     message: str
 
-
+"""
 @employee_router.post("/employee/get_all", response_model=List[Employee])
 def read_employees(json: ReadEmployeesJson):
     last_name, page, limit = json.last_name, json.page, json.limit
@@ -47,3 +74,4 @@ def delete_employee(id: int):
     if not result:
         raise HTTPException(status_code=404, detail="No such employee")
     return {"message": "Deleted"}
+"""
