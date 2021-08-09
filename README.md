@@ -1,5 +1,7 @@
 # My first FastAPI project
 
+Movie data taken from [here](https://www.kaggle.com/rounakbanik/the-movies-dataset?select=movies_metadata.csv).
+
 ## Prerequisites
 1. ```pip install -r requirements.txt```
 

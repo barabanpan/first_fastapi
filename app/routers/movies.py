@@ -3,13 +3,13 @@ from typing import List  #, Dict
 from pydantic import BaseModel
 import ormar
 
-from app.models.employee import Item, Category
+from app.models.movie import Movie, Genre
 
 
-employee_router = APIRouter()
+movie_router = APIRouter()
 
 
-
+"""
 @employee_router.get("/items/{item_id}", response_model=List[Item])
 async def get_item(item_id):
     try:
@@ -44,7 +44,7 @@ class ReadEmployeesJson(BaseModel):
 class MessageResponse(BaseModel):
     message: str
 
-"""
+
 @employee_router.post("/employee/get_all", response_model=List[Employee])
 def read_employees(json: ReadEmployeesJson):
     last_name, page, limit = json.last_name, json.page, json.limit

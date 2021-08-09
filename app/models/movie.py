@@ -9,25 +9,36 @@ from typing import List, Optional
 from .database import metadata, database
 
 
-class Category(ormar.Model):
+class Genre(ormar.Model):
     class Meta:
-        tablename = "categories"
+        tablename = "genres"
         metadata = metadata
         database = database
 
     id: int = ormar.Integer(primary_key=True)
-    name: str = ormar.String(max_length=100)
+    name: str = ormar.String(max_length=50)
 
 
-class Item(ormar.Model):
+class MovieGenre(ormar.Model):
     class Meta:
-        tablename = "items"
+        tablename = "movies_x_genres"
         metadata = metadata
         database = database
 
     id: int = ormar.Integer(primary_key=True)
-    name: str = ormar.String(max_length=100)
-    category: Optional[Category] = ormar.ForeignKey(Category, nullable=True)
+
+
+class Movie(ormar.Model):
+    class Meta:
+        tablename = "movies"
+        metadata = metadata
+        database = database
+
+    id: int = ormar.Integer(primary_key=True)
+    title: str = ormar.String(max_length=100)
+    plot: str = ormar.String(max_length=2000)
+    year: int = ormar.Integer()
+    genres = ormar.ManyToMany(Genre, through=MovieGenre)
 
 
 """class EmployeeBase(ormar.Model):

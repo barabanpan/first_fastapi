@@ -28,8 +28,8 @@ def create_app():
     app = FastAPI()
     setup_database(app)
 
-    from .routers.employee import employee_router
-    app.include_router(employee_router)
+    from .routers.movies import movie_router
+    app.include_router(movie_router)
 
     @app.get("/")
     def index():
