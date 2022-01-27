@@ -24,11 +24,6 @@ from app.models.movie import Movie, Genre
 from app.models.database import metadata
 target_metadata = metadata
 
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
-
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
