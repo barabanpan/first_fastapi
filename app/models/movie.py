@@ -21,7 +21,7 @@ class Movie(ormar.Model):
         database = database
 
     id: int = ormar.Integer(primary_key=True)
-    title: str = ormar.String(max_length=100)
-    plot: str = ormar.String(max_length=2000)
+    title: str = ormar.String(max_length=120)
+    plot: str = ormar.String(max_length=1000)
     year: int = ormar.Integer()
     genres: Optional[List[Genre]] = ormar.ManyToMany(Genre)
