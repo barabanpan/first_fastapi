@@ -5,14 +5,9 @@ Movie data taken from [here](https://www.kaggle.com/rounakbanik/the-movies-datas
 ## Prerequisites
 1. ```pip install -r requirements.txt```
 
-2. In root directory create file `.env`:
-```
-DEBUG=true
-DEVELOPMENT=true
-TESTING=true
-SECRET_KEY={your-secret-key}
-JWT_SECRET_KEY={your-jwt-secret-key}
-```
+2. ```alembic upgrate head```
+
+3. ```python load_to_database.py```
 
 ## Run
 ```uvicorn run:app --reload```
