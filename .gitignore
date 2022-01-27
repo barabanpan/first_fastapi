@@ -130,4 +130,3 @@ dmypy.json
 
 # Database file
 database.db
-movies_metadata.csv

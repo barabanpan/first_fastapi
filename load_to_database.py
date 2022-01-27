@@ -75,7 +75,7 @@ def write_movies(movies, genres_with_id):
 
 
 if __name__ == "__main__":
-    m = pd.read_csv("movies_metadata.csv")
+    m = pd.read_csv("movies_csv/movies_metadata.csv")
     movies, genres = clean_data(m)
 
     genres_with_id = write_genres(genres)
