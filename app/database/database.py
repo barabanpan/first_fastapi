@@ -1,11 +1,11 @@
 import databases
 import sqlalchemy
 
-from .. import config
+from config import Config
 
 
 metadata = sqlalchemy.MetaData()
 database = databases.Database(
-    config.SQLALCHEMY_DATABASE_URI,
+    Config.SQLALCHEMY_DATABASE_URI,
     force_rollback=True
 )

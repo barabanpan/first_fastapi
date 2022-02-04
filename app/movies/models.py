@@ -1,7 +1,7 @@
 import ormar
 from typing import List, Optional
 
-from .database import metadata, database
+from app.database.database import metadata, database
 
 
 class Genre(ormar.Model):
@@ -25,3 +25,13 @@ class Movie(ormar.Model):
     plot: str = ormar.String(max_length=1000)
     year: int = ormar.Integer()
     genres: Optional[List[Genre]] = ormar.ManyToMany(Genre)
+
+
+class Like(ormar.Model):
+    class Meta:
+        tablename = "movies_x_users"
+        metadata = metadata
+        database = database
+
+    id: int = ormar.Integer(primary_key=True)
+    rate: float = ormar.Float()

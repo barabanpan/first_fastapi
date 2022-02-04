@@ -12,3 +12,6 @@ class Config(object):
     TESTING = config("TESTING", default=True)
 
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + sqlite_uri
+    SECRET_KEY = config("SECRET_KEY", default="wef#$SEFCE123ED$REWeEWRsdf3$@@")
+    ACCESS_TOKEN_EXPIRE_MINUTES = config("ACCESS_TOKEN_EXPIRE_MINUTES", default=10080)
+    HASHING_ALGORITHM = config("HASHING_ALGORITHM", default="HS256")

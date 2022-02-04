@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import sqlalchemy
 
 from config import Config as config
-from .models.database import database, metadata
+from app.database.database import database, metadata
 
 
 def setup_database(app):
@@ -28,8 +28,11 @@ def create_app():
     app = FastAPI()
     setup_database(app)
 
-    from .routers.movies import movie_router
+    from app.movies.routers import movie_router
+    from app.auth.routers import auth_router
+
     app.include_router(movie_router)
+    app.include_router(auth_router)
 
     @app.get("/")
     def index():

@@ -3,10 +3,17 @@ from typing import List  #, Dict
 from pydantic import BaseModel
 import ormar
 
-from app.models.movie import Movie, Genre
+from app.movies.models import Movie, Genre, Like
+from app.users.models import User
 
 
 movie_router = APIRouter()
+
+
+
+# @movie_router.post("/{movie_id}/like", response_model=Like)
+# async def like_movie(movie_id):
+#     return Like()
 
 
 """

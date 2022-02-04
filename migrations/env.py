@@ -20,8 +20,9 @@ fileConfig(config.config_file_name)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from app.models.movie import Movie, Genre
-from app.models.database import metadata
+from app.users.models import User
+from app.movies.models import Movie, Genre, Like
+from app.database.database import metadata
 target_metadata = metadata
 
 
