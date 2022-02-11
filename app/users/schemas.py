@@ -39,7 +39,9 @@ class UserLoginResponse(BaseModel):
     """Response with tokens."""
 
     access_token: str
+    refresh_token: str
     token_type: str
-    expired_in: int
+    access_expired_in: int
+    refresh_expired_in: int
     is_admin: bool
     user_id: str

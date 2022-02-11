@@ -5,8 +5,10 @@ from fastapi import APIRouter, HTTPException, status
 from email_validator import validate_email, EmailNotValidError
 
 from app.users.models import User
-from app.users.schemas import UserLogin, UserSignUp, UserLoginResponse #, UserResetPassword
-from app.auth.services import ACCESS_TOKEN_EXPIRE_MINUTES, authenticate_user, create_access_token, create_password_hash
+from app.users.schemas import UserLogin, UserSignUp, UserLoginResponse
+from app.auth.services import (
+    ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_MINUTES, authenticate_user,
+    create_access_token, create_refresh_token, create_password_hash)
 
 
 auth_router = APIRouter()
@@ -19,7 +21,7 @@ auth_router = APIRouter()
 )
 async def login(user: UserLogin):
     """Endpoint for token authentication."""
-    user = authenticate_user(user.email, user.password)
+    user = await authenticate_user(user.email, user.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -28,13 +30,20 @@ async def login(user: UserLogin):
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.id, "email": user.email, "is_admin": user.is_admin},
+        data={"sub": user.id, "email": user.email, "is_admin": user.is_admin, "type": "access"},
         expires_delta=access_token_expires
+    )
+    refresh_token_expires = timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
+    refresh_token = create_refresh_token(
+        data={"sub": user.id, "email": user.email, "is_admin": user.is_admin, "type": "refresh"},
+        expires_delta=refresh_token_expires
     )
     login_data = {
         "access_token": access_token,
+        "refresh_token": refresh_token,
         "token_type": "bearer",
-        "expired_in": ACCESS_TOKEN_EXPIRE_MINUTES,
+        "access_expired_in": ACCESS_TOKEN_EXPIRE_MINUTES,
+        "refresh_expired_in": REFRESH_TOKEN_EXPIRE_MINUTES,
         "is_admin": user.is_admin,
         "user_id": user.id,
     }
@@ -76,35 +85,3 @@ async def sign_up(user: UserSignUp):
             headers={"WWW-Authenticate": "Bearer"}
         )
     return new_user
-
-
-"""@router.post("/reset-password", status_code=status.HTTP_200_OK)
-async def reset_password(user_reset_pass: UserResetPassword):
-    Reset User's password.
-
-    email, new_password = user_reset_pass.email, user_reset_pass.new_password
-    try:
-        valid = validate_email(email)
-        Update with the normalized form.
-        email = valid.email
-    except EmailNotValidError:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Not valid email address was provided: '{email}'"
-        )
-
-
-    with neo4j_driver.session() as session:
-        Checking if user exists, if not - raise 404.
-        user_exists = session.run(query_check_user, email=email)
-        if not user_exists.data():
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-
-        Encrypt new password.
-        new_password_hash = create_password_hash(new_password)
-
-        Update user's password with a new one.
-        session.run(query_reset_password, email=email, new_password_hash=new_password_hash)
-
-    return {"detail": "Password successfully updated"}
-"""

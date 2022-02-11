@@ -13,6 +13,7 @@ from app.users.models import User
 SECRET_KEY = Config.SECRET_KEY
 ALGORITHM = Config.HASHING_ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = int(Config.ACCESS_TOKEN_EXPIRE_MINUTES)
+REFRESH_TOKEN_EXPIRE_MINUTES = int(Config.REFRESH_TOKEN_EXPIRE_MINUTES)
 # ? app_password = settings.app_password
 
 
@@ -28,7 +29,7 @@ def verify_password(plain_password, password_hash):
     return pwd_context.verify(plain_password, password_hash)
 
 
-def get_user(user: str):
+async def get_user(user: str):
     """
     Search the database for user.
 
@@ -36,25 +37,27 @@ def get_user(user: str):
     For function get_current_user, searching is by id.
     """
     if "@" in user:
-        user_in_db = User.objects.get(email=user)
+        user_in_db = await User.objects.get_or_none(email=user)
     else:
-        user_in_db = User.objects.get(id=user)
+        user_in_db = await User.objects.get_or_none(id=user)
+
+    print('-----------------------------------------------------------', user_in_db, "-------------------------------------")
 
     try:
-        print(user_in_db)
+        pass
     except IndexError as err:
         print(f"Err: {err}")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Operation not permitted, wrong id or email provided: '{user}'",
+            detail=f"Wrong id or email provided: '{user}'",
             headers={"WWW-Authenticate": "Bearer"}
         )
     return user_in_db
 
 
-def authenticate_user(email, password):
+async def authenticate_user(email, password):
     """Authenticate user by checking they exist and that the password is correct."""
-    user = get_user(email)
+    user = await get_user(email)
     if not user:
         return False
 
@@ -73,6 +76,18 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
+def create_refresh_token(data: dict, expires_delta: Optional[timedelta] = None):
+    """Create refresh token, required for OAuth2 flow."""
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=150)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
