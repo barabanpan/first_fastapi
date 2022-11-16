@@ -16,12 +16,11 @@ Urls like [127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and [127.0.0.1:8000/
 
 ## TODO:
 
-1. і юзерських вподобань LikedMovies(user_id, movie_id, rate) щоб можна було додавати і видаляти собі їх, і редагувати, 
-2. круд
-3. зміну пароля, 
-4. логін, 
-5. рефрештокен і 
-6. окремо мі по токену
-7. гет рекомендейшнс, якщо нема лайкнутих мувіз, то сказати про це
-8. пошук фільм по опису, тіпа пост, що повертає фільм
-
+1. add table LikedMovies(user_id, movie_id, rate) and CRUD for it
+2. password reset and change
+3. login part 
+4. refresh token 
+5. /me to return user profile
+6. /get-recommendations based on liked movies
+7. search by movie's title or discription 
+8. improve search by description using nlp
